@@ -45,7 +45,7 @@ RUN wget https://raw.githubusercontent.com/python-poetry/poetry/${POETRY_VERSION
 
 # Install Python requirements
 
-COPY --chown=campaignresourcecentre ./poetry ./poetry
+COPY --chown=sddo ./poetry ./poetry
 
 RUN cd ./poetry && if [ "$BUILD_ENV" = "dev" ]; then poetry install --extras gunicorn; else poetry install --no-dev --extras gunicorn; fi; cd ../
 
