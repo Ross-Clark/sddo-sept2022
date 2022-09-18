@@ -18,6 +18,8 @@ services:
       AZURE_ACCOUNT_PRIVATE_ENDPOINT: ${AZURE_ACCOUNT_PRIVATE_ENDPOINT}
       DEBUG: ${DEBUG}
       GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
+    command: tail -f /dev/null # do nothing forever - exec commands elsewhere
+
     ports:
       - 8000:8000 # runserver
       - 4000:4000 # debugger
