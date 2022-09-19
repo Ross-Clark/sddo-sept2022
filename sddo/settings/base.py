@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["sddo-proj-sept2022.herokuapp.com"]
 # Application definition
 
 INSTALLED_APPS = [
+    "cyod.apps.CyodConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",

@@ -12,19 +12,15 @@ services:
       SECRET_KEY: local_dev_secret_key
       STATIC_DIR: /app/static/
       STATIC_URL: /static/
-      AZURE_ACCOUNT_NAME: ${AZURE_ACCOUNT_NAME}
-      AZURE_ACCOUNT_KEY: ${AZURE_ACCOUNT_KEY}
-      AZURE_ACCOUNT_PUBLIC_ENDPOINT: ${AZURE_ACCOUNT_PUBLIC_ENDPOINT}
-      AZURE_ACCOUNT_PRIVATE_ENDPOINT: ${AZURE_ACCOUNT_PRIVATE_ENDPOINT}
       DEBUG: ${DEBUG}
       GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
-    command: tail -f /dev/null # do nothing forever - exec commands elsewhere
+    command: tail -f /dev/null # do nothing forever
 
     ports:
       - 8000:8000 # runserver
       - 4000:4000 # debugger
     volumes:
       - ./manage.py:/app/manage.py:delegated,ro
-      - ./gunicorn-config.py:/app/gunicorn-config.py:delegated,ro
       - ./sddo:/app/sddo:delegated,rw
       - ./poetry:/app/poetry:delegated,rw
+      - ./cyod:/app/cyod:delegated,rw

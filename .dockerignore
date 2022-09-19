@@ -1,4 +1,5 @@
 /sddo/static_compiled
+/gunicorn-config.py
 
 /Dockerfile
 /docker/Dockerfile*

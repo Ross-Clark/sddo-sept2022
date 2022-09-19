@@ -30,7 +30,7 @@ def start(c):
     """
     Start the development environment
     """
-    run("docker-compose up")
+    run("docker-compose up -d")
 
     print("Use `fab sh` to enter the web container and run `djrun`")
 

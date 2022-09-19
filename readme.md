@@ -39,7 +39,7 @@ functionality:
 DB Models
  - User
  - Order
- - Basket
+ - Products
 
 
 
@@ -52,3 +52,23 @@ What Devops to include:
  - automation tool - puppeteer
  - unit tests - unittest probably -> could add coverage + black + gitleaks
  - 
+
+
+What a user needs to have:
+ - name
+ - role
+ - address
+ - products owned
+ - orders
+
+
+What a product needs:
+ - name
+ - description
+ - release
+ - jobs that can order them
+
+what an order needs:
+ - user
+ - list of products (basket)
+ - order status
