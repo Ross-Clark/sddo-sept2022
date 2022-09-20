@@ -1,4 +1,4 @@
-/sddo/static_compiled
+/static_compiled
 /gunicorn-config.py
 
 /Dockerfile
@@ -26,3 +26,4 @@ sdist/
 var/
 wheels/
 .installed.cfg
+node_modules/

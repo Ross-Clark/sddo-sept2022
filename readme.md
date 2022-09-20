@@ -2,6 +2,7 @@ Django project
 
 idea: self service tech update
 fill in form to to get newer model computer
+Chooose Your Own Device
 
 user fills in form
 

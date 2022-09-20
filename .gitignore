@@ -68,3 +68,5 @@ venv.bak/
 .history
 
 gunicorn-config.py
+
+node_modules/

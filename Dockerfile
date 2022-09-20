@@ -1,6 +1,17 @@
-FROM python:3.10-buster as backend
+FROM node:14 as frontend
 
 ARG CI=true
+
+# frontend dependencies.
+COPY package.json package-lock.json .babelrc.js webpack.config.js ./
+RUN npm ci --no-optional --no-audit --progress=false
+
+# Compile static files
+COPY ./static_src/ ./static_src/
+RUN npm run build:prod
+
+
+FROM python:3.10-buster as backend
 
 ARG POETRY_HOME=/opt/poetry
 ARG POETRY_VERSION=1.2.0
