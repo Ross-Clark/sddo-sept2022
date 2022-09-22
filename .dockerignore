@@ -9,7 +9,6 @@
 *.pyc
 *.swp
 /venv/
-/static/
 /media/
 /tmp/
 coverage

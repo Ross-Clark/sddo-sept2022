@@ -1,4 +1,4 @@
-"""sddo URL Configuration
+"""core URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -16,7 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include,path
 
+from core.views import index
+
 urlpatterns = [
     path('choose-your-own-device/', include('cyod.urls')),
-    path("admin/", admin.site.urls),
+    path('admin/', admin.site.urls),
+    path('',index)
 ]

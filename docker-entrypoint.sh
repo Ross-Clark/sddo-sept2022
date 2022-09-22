@@ -6,8 +6,8 @@ if [[ $# -eq 0 ]]; then
 
   #Run Gunicorn
   echo Executing gunicorn with defaults after ${GUNICORN_CMD_ARGS}
-  exec gunicorn sddo.wsgi:application \
-      --name sddo \
+  exec gunicorn core.wsgi:application \
+      --name core \
       --bind 0.0.0.0:8000 \
       --log-level=info \
       --log-file=- \

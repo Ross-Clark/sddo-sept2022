@@ -9,11 +9,19 @@ ROLE_CHOICES = [
 ]
 
 
+PRODUCT_CHOICES = [
+    ('lap','Laptop'),
+    ('pho','Phone'),
+    ('acc','accessory'),
+]
+
+
 class Product(models.Model):
     name = models.CharField(max_length = 100)
+    product_type = models.CharField(max_length=3,choices=PRODUCT_CHOICES)
     release = models.DateField(auto_now=False)
     description = models.TextField(max_length=100)
-    roles_allowed = models.CharField(max_length=10,choices=ROLE_CHOICES)
+    roles_allowed = models.CharField(max_length=5,choices=ROLE_CHOICES)
 
     def __str__(self):
         return self.name

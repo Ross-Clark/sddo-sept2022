@@ -1,16 +1,3 @@
-FROM node:14 as frontend
-
-ARG CI=true
-
-# frontend dependencies.
-COPY package.json package-lock.json .babelrc.js webpack.config.js ./
-RUN npm ci --no-optional --no-audit --progress=false
-
-# Compile static files
-COPY ./static_src/ ./static_src/
-RUN npm run build:prod
-
-
 FROM python:3.10-buster as backend
 
 ARG POETRY_HOME=/opt/poetry
@@ -37,7 +24,7 @@ WORKDIR /app
 ENV PATH=$PATH:${POETRY_HOME}/bin \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
-    DJANGO_SETTINGS_MODULE=sddo.settings.base \
+    DJANGO_SETTINGS_MODULE=core.settings.base \
     PORT=8000 
 
 ARG BUILD_ENV
@@ -61,7 +48,7 @@ COPY --chown=sddo ./poetry ./poetry
 RUN cd ./poetry && if [ "$BUILD_ENV" = "dev" ]; then poetry install --extras gunicorn; else poetry install --no-dev --extras gunicorn; fi; cd ../
 
 # Copy application code.
-COPY --chown=sddo ./sddo ./sddo
+COPY --chown=sddo ./src ./
 COPY --chown=sddo ./manage.py  ./docker-entrypoint.sh ./initializer-entrypoint.sh  gunicorn-conf.py ./
 
 # Load shortcuts

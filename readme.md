@@ -73,3 +73,6 @@ what an order needs:
  - user
  - list of products (basket)
  - order status
+
+
+## just used compiled frontend smh

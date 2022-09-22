@@ -4,7 +4,7 @@ import subprocess
 from invoke import run
 from invoke.tasks import task
 
-# Process .env file
+# load .env file
 if os.path.exists(".env"):
     with open(".env", "r") as f:
         for line in f.readlines():
@@ -14,12 +14,15 @@ if os.path.exists(".env"):
             var, value = line.split("=", 1)
             os.environ.setdefault(var, value)
 
+
 @task
 def build(c):
     """
     Build the development environment (call this first)
     """
-    #insert build processes such as SASS
+    #insert build processes
+
+    run("docker-compose up -d --build web")
 
     run("docker-compose stop")
     print("Project built: now run 'fab start'")

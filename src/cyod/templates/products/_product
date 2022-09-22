@@ -1,0 +1,6 @@
+{% block product %}
+
+{# title with type #}
+{# cards with products #}
+
+{% endblock %}

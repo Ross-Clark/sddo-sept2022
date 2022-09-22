@@ -1,18 +1,5 @@
 version: '3.7'
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: ./docker/Dcokerfile.frontend
-    init: true
-    environment:
-      NODE_ENV: development
-      PROXY_HOST: web
-      PROXY_PORT: 8000
-    volumes:
-      - ./package-lock.json:/home/node/package-lock.json:delegated,rw
-      - ./package.json:/home/node/package.json:delegated,rw
-      - ./static_src:/home/node/static_src:delegated,ro
   web:
     build:
       context: .
@@ -34,6 +21,6 @@ services:
       - 4000:4000 # debugger
     volumes:
       - ./manage.py:/app/manage.py:delegated,ro
-      - ./sddo:/app/sddo:delegated,rw
+      - ./src/core:/app/core:delegated,rw
       - ./poetry:/app/poetry:delegated,rw
-      - ./cyod:/app/cyod:delegated,rw
+      - ./src/cyod:/app/cyod:delegated,rw

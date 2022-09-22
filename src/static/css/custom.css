@@ -1,0 +1,11 @@
+.nhsd-logo {
+    display: block;
+    fill: #005bbb;
+    padding-right: 10px;
+}
+
+.feature-icon {
+    width: 4rem;
+    height: 4rem;
+    border-radius: .75rem;
+  }
