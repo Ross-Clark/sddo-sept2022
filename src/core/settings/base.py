@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ["sddo-proj-sept2022.herokuapp.com","localhost"]
 # Application definition
 
 INSTALLED_APPS = [
+    "user.apps.UserConfig",
     "cyod.apps.CyodConfig",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
+
+AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -83,6 +86,7 @@ DATABASES = {
     }
 }
 
+MEDIA_ROOT = "static/media"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

@@ -8,7 +8,7 @@ urlpatterns = [
     #/choose-your-own-device
     path('', views.IndexView.as_view(), name='index'),
     #/choose-your-own-device/product/<int>
-    path('product/<str:product_name>',views.product, name='product'),
+    path('product/<str:product_name>',views.ProductView.as_view, name='product'),
     #/choose-your-own-device/order/
     path('choose-your-own-device/order',views.order, name='order')
 ]

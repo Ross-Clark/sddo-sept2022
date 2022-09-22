@@ -11,8 +11,11 @@ class IndexView(View):
         return render(request,self.template_name)
 
 
-def product(request, product_name):
-    return HttpResponse("You're looking at %s." % product_name)
+class ProductView(View):
+
+    def get(request, product_name):
+        return HttpResponse("You're looking at %s." % product_name)
+
 
 def order(request):
     return HttpResponse('hello')

@@ -2,6 +2,33 @@
 
 {% block content %}
 
+{# h1 #}
+<div class="container">
+    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+    <div class="row">
+        <div class="col-md-8">
+            <h1>products</h1>
+        </div>
+    </div>
+    {% for type in types %}
+        <div class="row">
+            <div class="col-md-8">
+                <h2>{{type.type}}</h2>
+            </div>
+            {% for product in type.product%}
+                <div class="card" style="width: 18rem;">
+                    <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.description }}</p>
+                        <a href="/choose-your-own-device/{{ product.name }}" class="btn btn-primary">Product Page</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+</div>
 {# title with type #}
 {# cards with products #}
 

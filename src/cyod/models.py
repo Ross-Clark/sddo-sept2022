@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.conf import settings
 from django.db import models
 
 
@@ -18,9 +20,10 @@ PRODUCT_CHOICES = [
 
 class Product(models.Model):
     name = models.CharField(max_length = 100)
+    image = models.ImageField(upload_to='products')
     product_type = models.CharField(max_length=3,choices=PRODUCT_CHOICES)
     release = models.DateField(auto_now=False)
-    description = models.TextField(max_length=100)
+    description = models.TextField(max_length=500)
     roles_allowed = models.CharField(max_length=5,choices=ROLE_CHOICES)
 
     def __str__(self):
@@ -43,7 +46,7 @@ STATUS_CHOICES = [
 
 
 class Order(models.Model):
-    #user = models.ForeignKey(User, related_name="User", on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,)
     address1 = models.CharField(max_length=50)
     address2 = models.CharField(max_length=50)
     address3 = models.CharField(max_length=50)

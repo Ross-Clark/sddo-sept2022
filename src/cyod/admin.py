@@ -8,6 +8,14 @@ class OrderItemInline(admin.StackedInline):
 
 class OrderAdmin(admin.ModelAdmin):
     fieldsets = [ 
+        ('User',
+            {
+                'fields':
+                [
+                    'user'
+                ]
+            }
+        ),
         ( 'Address & Contact Information', 
             {
                 'fields':
@@ -21,7 +29,7 @@ class OrderAdmin(admin.ModelAdmin):
                 ]
             }
         ),
-        ('Order Information1994 ',
+        ('Order Information ',
             {
                 'fields':
                 [
