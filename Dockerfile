@@ -49,6 +49,7 @@ RUN cd ./poetry && if [ "$BUILD_ENV" = "dev" ]; then poetry install --extras gun
 
 # Copy application code.
 COPY --chown=sddo ./src ./
+COPY --chown=sddo ./src/media ./media
 COPY --chown=sddo ./manage.py  ./docker-entrypoint.sh ./initializer-entrypoint.sh  gunicorn-conf.py ./
 
 # Load shortcuts

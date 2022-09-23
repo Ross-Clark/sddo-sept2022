@@ -25,4 +25,4 @@ services:
       - ./src/cyod:/app/cyod:delegated,rw
       - ./src/user:/app/user:delegated,rw
       - ./src/core:/app/core:delegated,rw
-      - ./src/static:/app/static:delegated,rw
+      - ./src/media:/app/media:delegated,rw
