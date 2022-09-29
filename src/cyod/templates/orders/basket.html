@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block contents %}
+{% block content %}
 
 <div class="container">
     <div class="row">
@@ -9,17 +9,31 @@
         </div>
     </div>
     <hr>
+    {% if formset %}
+    <form class="ps-3" method="post">
+        {% csrf_token %}
+        {% for form in formset %}
+
+        <div class="row">
+            <div class="col-md-8">
+                {% for field in form %}
+                    {{field}}
+                {% endfor %}
+            </div>
+        </div>
+
+        <hr>
+        {% endfor %}
+        <input type="submit" class="btn btn-primary" name='submit' value="Submit Changes"/>
+        <input type="submit" class="btn btn-primary" name='complete' value="Complete Order"/>
+    </form>
+    {% else %}
     <div class="row">
         <div class="col-md-8">
-            <h2>Items</h2>
+            <h2>No Basket Items</h2>
         </div>
     </div>
-    {% for items in orderitems %}
-    <div class="row">
-        <div class="col-md-8">
-            <h2>Items</h2>
-        </div>
-    </div>
+    {% endif %}
 
 </div>
 

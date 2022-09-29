@@ -16,5 +16,5 @@ urlpatterns = [
     #/choose-your-own-device/order-history/
     path('order-history/',views.OrderHistoryView.as_view(), name='order_history'),
     #/choose-your-own-device/basket/
-    path('basket',views.BasketView.as_view(), name='order_history'),
+    path('basket/',views.BasketView.as_view(), name='order_history'),
 ]

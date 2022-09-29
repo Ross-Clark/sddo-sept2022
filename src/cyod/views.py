@@ -1,9 +1,10 @@
-from django.http import HttpResponse, Http404
-from django.shortcuts import render, redirect
+from django.http import Http404
+from django.forms import formset_factory
+from django.shortcuts import render, redirect, Http404
 from django.views import View
 
+from cyod import forms
 from cyod.models import Product, Order, OrderItem
-from cyod.forms import *
 
 import logging
 
@@ -50,7 +51,7 @@ class ProductView(View):
             logger.warning("product does not exist - product view")
             raise Http404("product does not exist")
 
-        form = OrderItemForm()
+        form = forms.OrderItemForm()
 
         context = {
                 "product" : product,
@@ -69,7 +70,7 @@ class ProductView(View):
             username = user.username
             logger.warning("Product does not exist, User:%s",username)
 
-        form = OrderItemForm(request.POST)
+        form = forms.OrderItemForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data.get('quantity')
             order_type = form.cleaned_data.get('order_type')
@@ -77,6 +78,8 @@ class ProductView(View):
         basket = Order.objects.filter( user = user ).filter(
             date_placed = None)
 
+        # if unplaced order does not exist make one
+        # and populate it with the OrderItem
         if len(basket) == 0:
             
             basket = Order.objects.create(user=user)
@@ -96,7 +99,7 @@ class ProductView(View):
                     order_type=order_type
                 )
 
-        return redirect("choose-your-own-device/orders/basket")
+        return redirect("/choose-your-own-device/basket")
 
 class OrderHistoryView(View):
 
@@ -117,17 +120,49 @@ class OrderHistoryView(View):
         return render(request,self.template_name,context)
 
 class BasketView(View):
-    template_name = 'orders/order.html'
+    template_name = 'orders/basket.html'
 
-    def get(self,request,order_type,product_name):
-        form = None
+    def get(self,request):
 
-        return render(request,self.template_name,{'context':context})
+        user = request.user
+
+        basket = Order.objects.filter( user = user ).filter(
+        date_placed = None)
+
+        # if unplaced order does not exist
+        # return no items in basket
+        if len(basket) == 0:
+            return render(request,self.template_name,{'form':None})
+        else:
+            basket = basket.first()
+        
+        basket = list(basket.OrderItem.all())
+        formset = formset_factory(forms.BasketForm, extra=0)
+        basketFormset = formset(initial=
+            [
+                {
+                    'product_name':x.product.name,
+                    'quantity':x.quantity,
+                    'order_type':x.order_type
+                } for x in basket 
+            ]
+        )
+
+        return render(request,self.template_name,{'formset':basketFormset})
 
     def post(self,request):
-        form = None
+        basketFormset = None
+        if 'submit' in request.POST:
+            # save changes then redisplays the page
+            return render(request,self.template_name,{'formset':basketFormset})
+        elif 'complete' in request.POST:
+            # save changes then redirect to order page
+            return redirect('/choose-your-own-device/order')
+        else:
+            # raises error and displays error page
+            logger.warning("unsupported submit name in basket form user:%s",request.user.username)
+            raise Http404('<h1> suspicious operation </h1>')
 
-        return render(request,self.template_name,{'form':form})
 
 class OrderView(View):
     template_name = 'orders/order.html'
@@ -139,4 +174,3 @@ class OrderView(View):
     def post(self,request):
 
         return render(request,self.template_name)
-
