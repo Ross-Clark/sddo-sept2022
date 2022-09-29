@@ -1,4 +1,9 @@
 <div class="col-md-3 text-end">
-    <button type="button" class="btn btn-outline-primary me-2">Login</button>
-    <button type="button" class="btn btn-outline-primary">Sign-up</button>
+    {% if user.is_authenticated %}
+    <a href="/user/profile" class="btn btn-outline-primary">Profile</a>
+    <a href="/user/logout" class="btn btn-outline-primary">Log Out</a>
+    {% else %}
+    <a href="/user/login" class="btn btn-outline-primary me-2">Log In</a>
+    <a href="/user/signup" class="btn btn-outline-primary">Sign Up</a>
+    {% endif %}
 </div>

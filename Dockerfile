@@ -3,7 +3,7 @@ FROM python:3.10-buster as backend
 ARG POETRY_HOME=/opt/poetry
 ARG POETRY_VERSION=1.2.0
 
-RUN useradd sddo -m && mkdir /app && chown sddo /app
+RUN useradd sddo -m && mkdir /app && chown sddo /app && mkdir /app/media && chown sddo /app/media
 
 WORKDIR /app
 
@@ -49,7 +49,7 @@ RUN cd ./poetry && if [ "$BUILD_ENV" = "dev" ]; then poetry install --extras gun
 
 # Copy application code.
 COPY --chown=sddo ./src ./
-COPY --chown=sddo ./src/media ./media
+COPY --chown=sddo ./media ./media
 COPY --chown=sddo ./manage.py  ./docker-entrypoint.sh ./initializer-entrypoint.sh  gunicorn-conf.py ./
 
 # Load shortcuts

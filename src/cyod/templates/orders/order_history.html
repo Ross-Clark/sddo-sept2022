@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Orders</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-8">
+            {% for order in orders %}
+                <h2> Order #{{order.id}} <h2>
+                <div class="card mb-1">
+                    <details class="accordion">
+                        <summary class="card-header"> Address &amp Contact Details </summary>
+                        <table class="table card-body mb-0">
+                            <tr>
+                                <th scope="row">Address 1</th>
+                                <td>{{order.address1}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Address 2</th>
+                                <td>{{order.address2}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Address 3</th>
+                                <td>{{order.address3}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Postcode</th>
+                                <td>{{order.postcode}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Phone Number</th>
+                                <td>{{order.phone}}</td>
+                            </tr>
+                        </table>
+                    </details>
+                </div>
+                <div class="card mb-1">
+                    <details class="accordion">
+                        <summary class="card-header"> Order Items </summary>
+                        {% for item in order.OrderItem.all %}
+                        <table class="table card-body mb-0">
+                            <tr>
+                                <th class="col-md-6" scope="row">Product</th>
+                                <td>{{item.product.name}}</td>
+                            </tr>
+                            <tr>
+                                <th class="col-md-6" scope="row">{% if item.order_type == 'ret' %}Number Returned{% elif item.order_type == 'req' %}Number Requested{% endif %}</th>
+                                <td>{{item.quantity}}</td>
+                            </tr>
+                        </table>
+                        {% endfor %}
+                    </details>
+                </div>
+                <div class="card mb-1">
+                    <details class="accordion">
+                        <summary class="card-header"> Justification </summary>
+                        <div class="card-body" >
+                        {{order.justification}}
+                        </div>
+                    </details>
+                </div>
+                {% if order.comments %}
+                <div class="card mb-1">
+                    <details class="accordion">
+                        <summary class="card-header"> Admin Comments </summary>
+                        <div class="card-body" >
+                        {{order.comments}}
+                        </div>
+                    </details>
+                </div>
+                {% endif %}
+                {% if order.status == 'wait'%}
+                <p> status: Awaiting Approval <p>
+                {% elif order.status == 'appr'%}
+                <p> status: Approved <p>
+                {% elif order.status == 'reje'%}
+                <p> status: Rejected <p>
+                {% elif order.status == 'sent'%}
+                <p> status: Sent <p>
+                {% elif order.status == 'deli'%}
+                <p> status: Delivered <p>
+                {% endif%}
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

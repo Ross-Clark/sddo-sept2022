@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block contents %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1>Basket</h1>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Items</h2>
+        </div>
+    </div>
+    {% for items in orderitems %}
+    <div class="row">
+        <div class="col-md-8">
+            <h2>Items</h2>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

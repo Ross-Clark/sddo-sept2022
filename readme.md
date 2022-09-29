@@ -1,3 +1,11 @@
+# How To Run
+
+## Docker
+
+
+## Docker with Fabric
+
+
 Django project
 
 idea: self service tech update

@@ -19,7 +19,10 @@ PRODUCT_CHOICES = [
 
 
 class Product(models.Model):
-    name = models.CharField(max_length = 100)
+    # name set to unique. This allows us to use the name to identify products
+    # without name clashes. This is superior to using id's as it stops.
+    # helps prevent Insecure Direct Object Reference
+    name = models.CharField(max_length = 100, unique=True)
     image = models.ImageField(upload_to='products')
     product_type = models.CharField(max_length=3,choices=PRODUCT_CHOICES)
     release = models.DateField(auto_now=False)
@@ -55,14 +58,24 @@ class Order(models.Model):
     justification = models.TextField(max_length=500)
     status = models.CharField(max_length=5,choices=STATUS_CHOICES, default="wait")
     comments = models.TextField(max_length=500,blank=True)
-    date_placed = models.DateField(auto_now=False,default=datetime.now)
+    date_placed = models.DateField(auto_now=False,default=None,null=True)
+
+
+    def create(cls, user):
+        order = cls(user)
+        date_placed=None
+        return order
     
     def __str__(self):
         return str(self.id)
 
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order, related_name="Order", on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, related_name="OrderItem", on_delete=models.CASCADE)
     product = models.ForeignKey(Product, related_name="Product", on_delete=models.CASCADE)
     quantity= models.PositiveIntegerField(default=1)
     order_type = models.CharField(max_length=4,choices=ORDER_TYPE_CHOICES)
+
+    def create(cls, order, product, quantity, order_type):
+        orderItem = cls(order,product,quantity,order_type)
+        return orderItem

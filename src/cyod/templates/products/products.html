@@ -7,25 +7,43 @@
     <!-- Stack the columns on mobile by making one full-width and the other half-width -->
     <div class="row">
         <div class="col-md-8">
-            <h1>products</h1>
+            <h1>Products</h1>
         </div>
     </div>
-    {% for type in types %}
-        <div class="row">
-            <div class="col-md-8">
-                <h2>{{type.type}}</h2>
+    <hr>
+    {% for key, value in products.items %}
+        {% if value|length > 0 %}
+            <div class="row">        
+                <div class="col-md-8">
+                    <h2>{{key}}</h2>
+                </div
             </div>
-            {% for product in type.product%}
-                <div class="card" style="width: 18rem;">
-                    <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.description }}</p>
-                        <a href="/choose-your-own-device/{{ product.name }}" class="btn btn-primary">Product Page</a>
+                {% for product in value %}
+                    {# every 3n cards indexed from 0 start a row (0,3,6 .etc) #}
+                    {% if forloop.counter0|divisibleby:3 %}
+                    <div class="row">
+                    {% endif %}
+                    {# Product Card #}
+                        <div class="col">
+                            <div class="card shadow-sm p-0 mb-4" style="width: 18rem;">
+                                <img src="{{ product.image.url }}" class="card-img-top" alt="Image of {{ product.name }}">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <a href="/choose-your-own-device/products/{{ product.name }}" class="btn btn-primary">Product Page</a>
+                                </div>
+                            </div>
+                        </div>
+                    {# every 3n+1 cards indexed from 0 start a row (1,4,7 .etc) #}
+                    {% if forloop.counter|divisibleby:3 %}
                     </div>
-                </div>
-            {% endfor %}
-        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% if not forloop.last %}
+        <hr>
+        {% endif %}
+        {% endif %}
     {% endfor %}
 
 </div>
