@@ -66,6 +66,7 @@ class Order(models.Model):
         date_placed=None
         return order
     
+
     def __str__(self):
         return str(self.id)
 

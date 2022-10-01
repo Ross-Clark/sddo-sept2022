@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container pb-3">
     <div class="row">
         <div class="col-md-8">
             <h1>Basket</h1>
@@ -12,20 +12,29 @@
     {% if formset %}
     <form class="ps-3" method="post">
         {% csrf_token %}
+        {{ formset.management_form }}
         {% for form in formset %}
 
         <div class="row">
             <div class="col-md-8">
                 {% for field in form %}
-                    {{field}}
+                        <div class="col-sm-10 {% if field.errors %} is-invalid-field{% endif %}">
+                            {{ field }}
+                        </div>
+                        {% if field.errors %} 
+                        <div class="error">
+                            {{ field.errors }}
+                        </div>
+                        {% endif %}
                 {% endfor %}
             </div>
         </div>
 
         <hr>
         {% endfor %}
+        {#<button type="submit" class="btn btn-primary">submit beast</button>#}
         <input type="submit" class="btn btn-primary" name='submit' value="Submit Changes"/>
-        <input type="submit" class="btn btn-primary" name='complete' value="Complete Order"/>
+        <input type="submit" class="btn btn-primary" name='submit' value="Complete Order"/>
     </form>
     {% else %}
     <div class="row">

@@ -1,5 +1,5 @@
 from django.http import Http404
-from django.forms import formset_factory
+from django.forms import formset_factory,modelformset_factory
 from django.shortcuts import render, redirect, Http404
 from django.views import View
 
@@ -11,6 +11,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class IndexView(View):
 
     template_name = 'cyod.html'
@@ -18,6 +19,7 @@ class IndexView(View):
     def get(self, request):
 
         return render(request,self.template_name)
+
 
 class AllProductsView(View):
 
@@ -51,7 +53,7 @@ class ProductView(View):
             logger.warning("product does not exist - product view")
             raise Http404("product does not exist")
 
-        form = forms.OrderItemForm()
+        form = forms.OrderItemProductViewForm()
 
         context = {
                 "product" : product,
@@ -70,7 +72,7 @@ class ProductView(View):
             username = user.username
             logger.warning("Product does not exist, User:%s",username)
 
-        form = forms.OrderItemForm(request.POST)
+        form = forms.OrderItemProductViewForm(request.POST)
         if form.is_valid():
             quantity = form.cleaned_data.get('quantity')
             order_type = form.cleaned_data.get('order_type')
@@ -101,6 +103,7 @@ class ProductView(View):
 
         return redirect("/choose-your-own-device/basket")
 
+
 class OrderHistoryView(View):
 
     template_name = 'orders/order_history.html'
@@ -119,8 +122,13 @@ class OrderHistoryView(View):
         context = {"orders":orders}
         return render(request,self.template_name,context)
 
+
 class BasketView(View):
+
     template_name = 'orders/basket.html'
+
+    basketFormset = modelformset_factory(OrderItem,forms.BasketForm, extra=0)
+
 
     def get(self,request):
 
@@ -129,39 +137,72 @@ class BasketView(View):
         basket = Order.objects.filter( user = user ).filter(
         date_placed = None)
 
-        # if unplaced order does not exist
-        # return no items in basket
+        # if unplaced order does not exist return no items in basket
+        # else return formset of all orderitems
         if len(basket) == 0:
             return render(request,self.template_name,{'form':None})
         else:
             basket = basket.first()
-        
-        basket = list(basket.OrderItem.all())
-        formset = formset_factory(forms.BasketForm, extra=0)
-        basketFormset = formset(initial=
-            [
-                {
-                    'product_name':x.product.name,
-                    'quantity':x.quantity,
-                    'order_type':x.order_type
-                } for x in basket 
-            ]
-        )
 
-        return render(request,self.template_name,{'formset':basketFormset})
+            # create formset for orderitems in order
+            Formset = self.basketFormset(
+            queryset=basket.OrderItem.all()
+            )
+
+            # set product name related to orderitem
+            Formset = self.get_product_name(Formset)
+
+            return render(request,self.template_name,{'formset':Formset})
+
 
     def post(self,request):
-        basketFormset = None
-        if 'submit' in request.POST:
-            # save changes then redisplays the page
-            return render(request,self.template_name,{'formset':basketFormset})
-        elif 'complete' in request.POST:
-            # save changes then redirect to order page
-            return redirect('/choose-your-own-device/order')
-        else:
-            # raises error and displays error page
-            logger.warning("unsupported submit name in basket form user:%s",request.user.username)
+        
+
+        # get all form data and structure it into forms and submit type
+        formData = request.POST
+
+        Formset = self.basketFormset(request.POST)
+
+        user = request.user
+        basket = Order.objects.filter( user = user ).filter(
+        date_placed = None)
+
+        try:
+            basket = basket.first()
+        except Order.DoesNotExist:
+            logger.warning("Attempt to edit non-existing basket - user:%s",user.username)
             raise Http404('<h1> suspicious operation </h1>')
+        
+        Formset = self.get_product_name(Formset)
+
+        submitType = formData.get('submit')
+        for basketForm in Formset:
+            if basketForm.is_valid():
+                if submitType not in ['Submit Changes','Complete Order']:
+                    # raises error and displays error page
+                    logger.warning("unsupported submit name in basket form user:%s",request.user.username)
+                    raise Http404('<h1> suspicious operation </h1>')
+                else:
+                    basket = basketForm.save(commit=False)
+                    basket.quantity = basketForm.cleaned_data.get('quantity')
+                    basket.order_type = basketForm.cleaned_data.get('order_type')
+                    basket.save()
+            else:
+                return render(request,self.template_name,{'formset':Formset})
+
+        if submitType == 'Complete Order':
+            #redirect to order page
+            return redirect('/choose-your-own-device/order')
+        elif submitType == 'Submit Changes':
+            # redisplays the updated page
+            return render(request,self.template_name,{'formset':Formset})
+
+
+    def get_product_name(self,basketFormset):
+        for form in basketFormset:
+            product= Product.objects.get(id=form.instance.product_id).name
+            form.initial['product_name'] = product
+        return basketFormset
 
 
 class OrderView(View):
