@@ -20,42 +20,77 @@ class CustomUserCreationForm(UserCreationForm):
         "password_mismatch": _("The two password fields didn’t match."),
     }
 
-    username = UsernameField(widget=forms.TextInput(attrs={'class':"form-control"}))
+    username = UsernameField(widget=forms.TextInput(attrs={"class": "form-control"}))
 
     password1 = forms.CharField(
         label=_("Password"),
         strip=False,
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password",'class':"form-control"}),
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "new-password", "class": "form-control"}
+        ),
         help_text=password_validation.password_validators_help_text_html(),
     )
 
     password2 = forms.CharField(
         label=_("Password confirmation"),
-        widget=forms.PasswordInput(attrs={"autocomplete": "new-password",'class':"form-control"}),
+        widget=forms.PasswordInput(
+            attrs={"autocomplete": "new-password", "class": "form-control"}
+        ),
         strip=False,
         help_text=_("Enter the same password, for verification."),
     )
 
-    first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class':"form-control"}))
+    first_name = forms.CharField(
+        max_length=30,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
 
-    last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class':"form-control"}))
+    last_name = forms.CharField(
+        max_length=30,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
 
-    email = forms.EmailField(max_length=254, required=True, widget=forms.TextInput(attrs={'class':"form-control"}))
+    email = forms.EmailField(
+        max_length=254,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
 
     class Meta:
         model = User
-        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', )
+        fields = (
+            "username",
+            "first_name",
+            "last_name",
+            "email",
+            "password1",
+            "password2",
+        )
 
 
 class UpdateUserForm(forms.ModelForm):
     """
     A form to update the users information
     """
-    
-    first_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class':"form-control"}))
-    last_name = forms.CharField(max_length=30, required=True, widget=forms.TextInput(attrs={'class':"form-control"}))
-    email = forms.EmailField(max_length=254, required=True, widget=forms.TextInput(attrs={'class':"form-control"}))
+
+    first_name = forms.CharField(
+        max_length=30,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
+    email = forms.EmailField(
+        max_length=254,
+        required=True,
+        widget=forms.TextInput(attrs={"class": "form-control"}),
+    )
 
     class Meta:
         model = User
-        fields = ( 'first_name', 'last_name', 'email')
+        fields = ("first_name", "last_name", "email")

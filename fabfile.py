@@ -20,7 +20,7 @@ def build(c):
     """
     Build the development environment (call this first)
     """
-    #insert build processes
+    # insert build processes
 
     run("docker-compose up -d --build web")
 
@@ -36,7 +36,6 @@ def start(c):
     run("docker-compose up -d")
 
     print("Use `fab sh` to enter the web container and run `djrun`")
-
 
 
 @task

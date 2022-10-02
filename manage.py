@@ -9,6 +9,7 @@ def main():
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "sddo.settings.base")
 
     from django.conf import settings
+
     if settings.DEBUG:
         if os.environ.get("RUN_MAIN"):
             import ptvsd

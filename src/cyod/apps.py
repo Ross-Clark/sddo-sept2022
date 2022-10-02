@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class CyodConfig(AppConfig):
-    default_auto_field = 'django.db.models.BigAutoField'
-    name = 'cyod'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = "cyod"

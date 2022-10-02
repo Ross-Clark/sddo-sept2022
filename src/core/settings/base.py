@@ -19,12 +19,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-@3+om(ovuv)rvh3sbr*079&882$gr-tkw#3gxama5!reilw5g@" # https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/#secret-key
+SECRET_KEY = "django-insecure-@3+om(ovuv)rvh3sbr*079&882$gr-tkw#3gxama5!reilw5g@"  # https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/#secret-key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True ####################################################
+DEBUG = True  ####################################################
 
-ALLOWED_HOSTS = ["sddo-proj-sept2022.herokuapp.com","localhost"]
+ALLOWED_HOSTS = ["sddo-proj-sept2022.herokuapp.com", "localhost"]
 
 
 # Application definition
@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 ]
 
-AUTH_USER_MODEL = 'user.User'
+AUTH_USER_MODEL = "user.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -50,7 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "core.middleware.AuthRequiredMiddleware"
+    "core.middleware.AuthRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -58,9 +58,7 @@ ROOT_URLCONF = "core.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR/'templates'
-        ],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -131,9 +129,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #                      All Custom Past here                             #
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Cookie HTTPS Security
 CSRF_COOKIE_SECURE = True
@@ -142,24 +140,18 @@ SESSION_COOKIE_SECURE = True
 
 # Logging
 LOGGING = {
-    'version': 1,                       #dictConfig  version
-    'disable_existing_loggers': False,  # retain default loggers
-    'handlers': {
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': 'general.log',
+    "version": 1,  # dictConfig  version
+    "disable_existing_loggers": False,  # retain default loggers
+    "handlers": {
+        "file": {
+            "class": "logging.FileHandler",
+            "filename": "general.log",
         },
     },
-    'loggers':{
-        'user.views':{
-            'level':'DEBUG',
-            'handlers':['file']
-        },
-        'cyod.views':{
-            'level':'DEBUG',
-            'handlers':['file']
-        },
-    }
+    "loggers": {
+        "user.views": {"level": "DEBUG", "handlers": ["file"]},
+        "cyod.views": {"level": "DEBUG", "handlers": ["file"]},
+    },
 }
 
 LOGIN_REDIRECT_URL = "/choose-your-own-device"
