@@ -38,10 +38,8 @@ jobs:
           poetry install 
 
       - name: Black Check
-        uses: jpetrucciani/black-check@22.8.0
-        with:
-          path: .
-          black_flags: '--exclude .+/migrations --check'
+        run: |
+          black . --check --config=./poetry/pyproject.toml
           
       - name: Test with pytest
         run: |
