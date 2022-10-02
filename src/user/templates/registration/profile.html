@@ -29,6 +29,13 @@
             <p><a href="/user/edit">Edit Profile</a></p>
             <p><a href="/user/password_change/">Change Password</a></p>
         </div>
+        {% if user.is_staff %}
+        <div class="col-md-8">
+            <h1>Admin</h1>
+            <p><a href="/admin/"> admin </a></p>
+            <p><a href="/user/admin/logs">Download Logs</a></p>
+        </div>
+        {% endif %}
     </div>
     {% endif %}
 {% endblock %}

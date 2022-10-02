@@ -1,8 +1,11 @@
+import os
 from django.contrib.auth import logout, login, authenticate
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect
 from django.views import View
-from user.models import User
+from django.views.static import serve
 
+from user.models import User
 from user.forms import CustomUserCreationForm, UpdateUserForm
 
 import logging
@@ -102,3 +105,17 @@ class EditUserView(View):
             return render(request,self.template_name,{'form':form})
 
         return redirect('/user/profile')
+
+
+class LogsView(View):
+
+    template_name = 'admin/log.html'
+
+    def get(self,request):
+        user = request.user
+        if user.is_staff:
+            filepath = './general.log'
+            return serve(request, os.path.basename(filepath), os.path.dirname(filepath))
+        else:
+            logger.warning("User %s Tried to access logs",user.username)
+            raise PermissionDenied()

@@ -32,5 +32,9 @@ urlpatterns = [
         "password_reset/done/",
         defaultViews.PasswordResetDoneView.as_view(),
         name="password_reset_done",
-    )
+    ),
+    path(
+        "admin/logs/",
+        views.LogsView.as_view(),
+        name="log"),
 ]

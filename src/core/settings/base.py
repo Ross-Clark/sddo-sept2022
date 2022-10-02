@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "core.middleware.AuthRequiredMiddleware"
 ]
 
 ROOT_URLCONF = "core.urls"
@@ -85,10 +85,6 @@ DATABASES = {
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
-
-MEDIA_ROOT = "media/"
-
-MEDIA_URL = "media/"
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -154,6 +150,20 @@ LOGGING = {
             'filename': 'general.log',
         },
     },
+    'loggers':{
+        'user.views':{
+            'level':'DEBUG',
+            'handlers':['file']
+        },
+        'cyod.views':{
+            'level':'DEBUG',
+            'handlers':['file']
+        },
+    }
 }
 
 LOGIN_REDIRECT_URL = "/choose-your-own-device"
+
+MEDIA_ROOT = "media/"
+
+MEDIA_URL = "media/"

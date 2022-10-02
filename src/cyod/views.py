@@ -6,7 +6,6 @@ from django.views import View
 
 from cyod import forms
 from cyod.models import Product, Order, OrderItem
-from user.models import User
 
 import logging
 
@@ -211,17 +210,24 @@ class OrderView(View):
     
     def post(self,request):
 
-        basket = get_basket_order(request)
-        if len(basket.OrderItem) == 0:
+
+        # check that the order has order items 
+        basket = get_basket_order_queryset(request)
+        if not basket.values('OrderItem').first().get('OrderItem',None):
             logger.warning("user:%s tried to access order view without orderItems",request.user.username)
             return redirect('/choose-your-own-device/basket')
+
+        #initiate instance of form
+        basket = basket.first()
         form = forms.OrderForm(request.POST, instance=basket)
 
+        # validate form, add date_placed and status then save to db
         if form.is_valid():
             order = form.save(commit=False)
             order.date_placed = datetime.now().strftime('%Y-%m-%d')
             order.status = 'wait'
             order.save()
+            logger.info("user:%s made order order_id:%s",request.user.username,order.pk)
             return redirect('/choose-your-own-device/order/confirmed')
         else:
             return render(request,self.template_name,{'form':form})
