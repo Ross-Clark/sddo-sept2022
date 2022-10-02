@@ -39,7 +39,9 @@ jobs:
           
       # run black - lint check
       - name: link check - black
-        run: python3 -m black . --check --config=./poetry/pyproject.toml
+        run: |
+          pip install -Iv black==22.6.0
+          python3 -m black . --check --config=./poetry/pyproject.toml
 
           
       - name: Test with pytest
