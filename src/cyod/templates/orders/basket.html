@@ -9,23 +9,30 @@
         </div>
     </div>
     <hr>
-    {% if formset %}
+    {% if formset|length > 0 %}
     <form class="ps-3" method="post">
         {% csrf_token %}
         {{ formset.management_form }}
         {% for form in formset %}
-
         <div class="row">
             <div class="col-md-8">
                 {% for field in form %}
-                        <div class="col-sm-10 {% if field.errors %} is-invalid-field{% endif %}">
-                            {{ field }}
-                        </div>
-                        {% if field.errors %} 
-                        <div class="error">
-                            {{ field.errors }}
-                        </div>
-                        {% endif %}
+                {% if field.label != 'Delete' %}
+                    <div class="col-sm-10 {% if field.errors %} is-invalid-field{% endif %}">
+                        {{ field }}
+                    </div>
+                    {% if field.errors %} 
+                    <div class="error">
+                        {{ field.errors }}
+                    </div>
+                    {% endif %}
+                {% else %}
+                    <div class="col">
+                        {{ field }}
+                        <label class="form-label col-form-label"> Remove Item
+                        </label>
+                    </div>
+                {% endif%}
                 {% endfor %}
             </div>
         </div>

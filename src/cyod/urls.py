@@ -17,4 +17,6 @@ urlpatterns = [
     path('order-history/',views.OrderHistoryView.as_view(), name='order_history'),
     #/choose-your-own-device/basket/
     path('basket/',views.BasketView.as_view(), name='order_history'),
+    #/choose-your-own-device/order/confirmed
+    path('order/confirmed',views.OrderConfirmView.as_view(), name='order_done'),
 ]

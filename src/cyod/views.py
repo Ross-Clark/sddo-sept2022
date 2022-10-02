@@ -1,10 +1,12 @@
+from datetime import datetime
 from django.http import Http404
-from django.forms import formset_factory,modelformset_factory
+from django.forms import modelformset_factory
 from django.shortcuts import render, redirect, Http404
 from django.views import View
 
 from cyod import forms
 from cyod.models import Product, Order, OrderItem
+from user.models import User
 
 import logging
 
@@ -127,26 +129,22 @@ class BasketView(View):
 
     template_name = 'orders/basket.html'
 
-    basketFormset = modelformset_factory(OrderItem,forms.BasketForm, extra=0)
-
+    basketFormset = modelformset_factory(OrderItem,forms.BasketForm,can_delete=True, extra=0)
 
     def get(self,request):
 
-        user = request.user
-
-        basket = Order.objects.filter( user = user ).filter(
-        date_placed = None)
+        basket = get_basket_order_queryset(request)
 
         # if unplaced order does not exist return no items in basket
         # else return formset of all orderitems
         if len(basket) == 0:
             return render(request,self.template_name,{'form':None})
         else:
-            basket = basket.first()
+            basket = get_basket_order(request)
 
             # create formset for orderitems in order
             Formset = self.basketFormset(
-            queryset=basket.OrderItem.all()
+                queryset=basket.OrderItem.all()
             )
 
             # set product name related to orderitem
@@ -157,44 +155,35 @@ class BasketView(View):
 
     def post(self,request):
         
-
-        # get all form data and structure it into forms and submit type
-        formData = request.POST
-
         Formset = self.basketFormset(request.POST)
-
-        user = request.user
-        basket = Order.objects.filter( user = user ).filter(
-        date_placed = None)
-
-        try:
-            basket = basket.first()
-        except Order.DoesNotExist:
-            logger.warning("Attempt to edit non-existing basket - user:%s",user.username)
-            raise Http404('<h1> suspicious operation </h1>')
         
         Formset = self.get_product_name(Formset)
 
-        submitType = formData.get('submit')
-        for basketForm in Formset:
-            if basketForm.is_valid():
-                if submitType not in ['Submit Changes','Complete Order']:
-                    # raises error and displays error page
-                    logger.warning("unsupported submit name in basket form user:%s",request.user.username)
-                    raise Http404('<h1> suspicious operation </h1>')
-                else:
-                    basket = basketForm.save(commit=False)
-                    basket.quantity = basketForm.cleaned_data.get('quantity')
-                    basket.order_type = basketForm.cleaned_data.get('order_type')
-                    basket.save()
-            else:
-                return render(request,self.template_name,{'formset':Formset})
+        # if submit type is wrong raise error
+        submitType = request.POST.get('submit')
+        if submitType not in ['Submit Changes','Complete Order']:
+            # raises error and displays error page
+            logger.warning("unsupported submit name in basket form user:%s",request.user.username)
+            raise Http404('<h1> suspicious operation </h1>')
+
+        if Formset.is_valid():
+            Formset.save()
+        else:
+            return render(request,self.template_name,{'formset':Formset})
 
         if submitType == 'Complete Order':
             #redirect to order page
+
             return redirect('/choose-your-own-device/order')
+
         elif submitType == 'Submit Changes':
             # redisplays the updated page
+            # has to refresh the formset
+            basket = get_basket_order(request)
+            Formset = self.basketFormset(
+                    queryset=basket.OrderItem.all()
+                )
+            Formset = self.get_product_name(Formset)
             return render(request,self.template_name,{'formset':Formset})
 
 
@@ -210,8 +199,49 @@ class OrderView(View):
 
     def get(self,request):
 
-        return render(request,self.template_name)
+        basket = get_basket_order_queryset(request)
+        #prevent empty or non existant baskets from being accessed
+        if basket == None or not basket.values('OrderItem').first().get('OrderItem',None):
+            logger.warning("user:%s tried to access order view without basket",request.user.username)
+            return redirect('/choose-your-own-device/basket')
+        basket = basket.first()
+        form = forms.OrderForm(instance=basket)
+
+        return render(request,self.template_name,{'form':form})
     
     def post(self,request):
 
+        basket = get_basket_order(request)
+        if len(basket.OrderItem) == 0:
+            logger.warning("user:%s tried to access order view without orderItems",request.user.username)
+            return redirect('/choose-your-own-device/basket')
+        form = forms.OrderForm(request.POST, instance=basket)
+
+        if form.is_valid():
+            order = form.save(commit=False)
+            order.date_placed = datetime.now().strftime('%Y-%m-%d')
+            order.status = 'wait'
+            order.save()
+            return redirect('/choose-your-own-device/order/confirmed')
+        else:
+            return render(request,self.template_name,{'form':form})
+
+
+class OrderConfirmView(View):
+    template_name = 'orders/confirmation.html'
+
+    def get(self,request):
+
         return render(request,self.template_name)
+
+
+def get_basket_order_queryset(request):
+    
+    user = request.user
+
+    return Order.objects.filter( user = user ).filter(
+    date_placed = None)
+
+def get_basket_order(request):
+    basket = get_basket_order_queryset(request).first()
+    return basket

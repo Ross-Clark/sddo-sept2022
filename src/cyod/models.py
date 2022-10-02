@@ -53,6 +53,7 @@ class Order(models.Model):
     address1 = models.CharField(max_length=50)
     address2 = models.CharField(max_length=50)
     address3 = models.CharField(max_length=50)
+    town = models.CharField(max_length=50)
     postcode = models.CharField(max_length=10)
     phone = models.CharField(max_length=13)
     justification = models.TextField(max_length=500)
