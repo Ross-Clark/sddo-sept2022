@@ -34,7 +34,8 @@ jobs:
         run: |
           pip install -U pip
           pip install poetry
-          poetry install ./poetry/
+          cd ./poetry/
+          poetry install 
 
       - name: Black Check
         uses: jpetrucciani/black-check@22.8.0
