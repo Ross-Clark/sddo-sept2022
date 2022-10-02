@@ -6,6 +6,9 @@
 ## Docker with Fabric
 
 
+## view on heroku
+    - https://sddo-proj-sept2022.herokuapp.com/
+
 Django project
 
 idea: self service tech update

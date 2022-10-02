@@ -57,4 +57,4 @@ COPY ./docker/bashrc.sh /home/sddo/.bashrc
 
 USER sddo
 
-CMD gunicorn sddo.wsgi:application
+CMD gunicorn core.wsgi:application
