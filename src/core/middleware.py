@@ -8,9 +8,7 @@ class AuthRequiredMiddleware(object):
 
     def __call__(self, request):
 
-        excludedUris = (
-            request.path != "/user/login/" and request.path != "/user/signup/"
-        )
+        excludedUris = request.path != "/user/login/" and request.path != "/user/signup/"
 
         if not request.user.is_authenticated and excludedUris:
             return HttpResponseRedirect(reverse("login"))

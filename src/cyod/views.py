@@ -221,9 +221,7 @@ class OrderView(View):
             order.date_placed = datetime.now().strftime("%Y-%m-%d")
             order.status = "wait"
             order.save()
-            logger.info(
-                "user:%s made order order_id:%s", request.user.username, order.pk
-            )
+            logger.info("user:%s made order order_id:%s", request.user.username, order.pk)
             return redirect("/choose-your-own-device/order/confirmed")
         else:
             return render(request, self.template_name, {"form": form})
