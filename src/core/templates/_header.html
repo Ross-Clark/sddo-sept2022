@@ -19,10 +19,12 @@
         </a>
 
         <ul class="nav col-12 pe-4 col-md-auto mb-2 justify-content-center mb-md-0">
+        {% if user.is_authenticated %}
             <li><a href="/choose-your-own-device/" class="nav-link px-2 link-secondary {% if request.path != "/choose-your-own-device/" %} link-dark {% endif %}">Home</a></li>
             <li><a href="/choose-your-own-device/products" class="nav-link px-2 link-secondary {% if request.path != "/choose-your-own-device/products/" %} link-dark {% endif %}">Products</a></li>
             <li><a href="/about" class="nav-link link-secondary px-2 {% if request.path != "/about/" %} link-dark {% endif %}">About</a></li>
         </ul>
+        {% endif %}
         {% include '_login.html'%}
     </header>
 </div>
