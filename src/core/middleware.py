@@ -13,14 +13,6 @@ class AuthRequiredMiddleware(object):
     def __init__(self, get_response):
         self.get_response = get_response
 
-    def validate_url(self,url):
-        # search urlpatterns for url
-        # return url if it matches else return None 
-        for e in urlpatterns:
-            if e.regex.match(url):
-                return url
-        return None
-
     def __call__(self, request):
 
         # Boolean to determine if the request is from one of the whitelisted URLS
@@ -30,7 +22,7 @@ class AuthRequiredMiddleware(object):
         # and is not on a whitelisted page
         # logs the attempt
         if not request.user.is_authenticated and excludedUris:
-            url = validate_url(request.path)
+            url = self.validate_url(request.path)
             if url:
                 logger.warning("anonymous user attempted to access site : %s",url)
             else:
@@ -42,3 +34,11 @@ class AuthRequiredMiddleware(object):
         response = self.get_response(request)
 
         return response
+
+    def validate_url(self,url):
+        # search urlpatterns for url
+        # return url if it matches else return None 
+        for e in urlpatterns:
+            if e.regex.match(url):
+                return url
+        return None
