@@ -2,7 +2,7 @@
 name = "sddo"
 version = "0.0.1"
 description = "Software Development and dev-ops project, creating a platform to update hardward"
-authors = ["Your Name <you@example.com>"]
+authors = ["ross.clark2@nhs.net"]
 license = "MIT"
 readme = "README.md"
 
