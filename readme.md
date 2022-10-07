@@ -1,89 +1,45 @@
 # How To Run
 
-## Docker
+To run this repository you will need to: 
 
+    install docker 
+        - Mac: https://docs.docker.com/desktop/install/mac-install/ 
+        - Windows: https://docs.docker.com/desktop/install/windows-install/ 
+        - Linux: https://docs.docker.com/desktop/install/linux-install/
+
+    install docker-compose - https://docs.docker.com/compose/install/
+
+## Docker using docker-compose
+
+    open the base directory of the repository in your console
+
+    run `docker-compose up -d`
+
+    run `docker-compose exec web bash`
+
+    when in the SH'd into the container, you can run django manage.py commands via the shortcut dj
+
+    To start the django webserver run `djrun` (alias of `python manage.py runserver 0.0.0.0:8000`) 
+
+    To run the gunicorn webserver run `djgun` (alias of `gunicorn core.wsgi:application --reload`) 
 
 ## Docker with Fabric
 
+    install fabric - https://www.fabfile.org/installing.html
+
+    open the base directory of the repository in your console
+
+    run `fab build` to run the build steps for the docker container
+
+    run `fab start` to start the docker container
+
+    run `fab sh` to SH into the container
+
+    when in the SH'd into the container, you can run django manage.py commands via the shortcut dj
+
+    To start the django webserver run `djrun` (alias of `python manage.py runserver 0.0.0.0:8000`) 
+
+    To run the gunicorn webserver run `djgun` (alias of `gunicorn core.wsgi:application --reload`) 
 
 ## view on heroku
-    - https://sddo-proj-sept2022.herokuapp.com/
-
-Django project
-
-idea: self service tech update
-fill in form to to get newer model computer
-Chooose Your Own Device
-
-user fills in form
-
-admin updates status
-
-CRUD for users
-CRUD for orders
-
-django user log in 
-admin user pages
-user pages
-
-
-
-
-what to include:
-
-readme / explanation on how to run
-
-Coding Practices:
- - modulisation
- - readability (comments, indentation, naming conventions.etc, DIO/DRY )
- - usability considerations
-
-security:
- - VALIDATE ALL DATA
- - LOG ERRORS
- - follow all OWASP top 10 ( BUT I need to evidence at least 3 ) 
-
-functionality:
- - Crud for users
- - crud for admins
- - crud for basket/orders
-
-DB Models
- - User
- - Order
- - Products
-
-
-
-What Devops to include:
- - git
- - CI/CD Pipelines
- - Build Automation Tool  - eg fabric, virtualenv and pip
- - Web app server = django
- - containers - docker 
- - automation tool - puppeteer
- - unit tests - unittest probably -> could add coverage + black + gitleaks
- - 
-
-
-What a user needs to have:
- - name
- - role
- - address
- - products owned
- - orders
-
-
-What a product needs:
- - name
- - description
- - release
- - jobs that can order them
-
-what an order needs:
- - user
- - list of products (basket)
- - order status
-
-
-## just used compiled frontend smh
+    https://sddo-proj-sept2022.herokuapp.com/
