@@ -50,8 +50,9 @@ class ProductView(View):
     def get(self, request, product_name):
         try:
             product = Product.objects.get(name=product_name)
-        except product.DoesNotExist:
-            logger.warning("product does not exist - product view")
+        except Product.DoesNotExist:
+            username = request.user.username
+            logger.warning("user:%s product page does not exist - product view",username)
             raise Http404("product does not exist")
 
         form = forms.OrderItemProductViewForm()
@@ -88,12 +89,15 @@ class ProductView(View):
             OrderItem.objects.create(
                 order=basket, product=product, quantity=quantity, order_type=order_type
             )
+            logger.info("user: %s created a new basket order",user.username)
 
         else:
             basket = basket.first()
             OrderItem.objects.create(
                 order=basket, product=product, quantity=quantity, order_type=order_type
             )
+
+        logger.info("user: %s created a new order item for %s in their open basket",user.username,product_name)
 
         return redirect("/choose-your-own-device/basket")
 
@@ -107,7 +111,7 @@ class OrderHistoryView(View):
         try:
             user = request.user
         except:
-            logger.warning("cant find user %s - order history", user.username)
+            logger.warning("cant find user:%s - order history", user.username)
         orders = Order.objects.filter(user=user).exclude(date_placed=None)
         context = {"orders": orders}
         return render(request, self.template_name, context)
@@ -151,7 +155,7 @@ class BasketView(View):
         if submitType not in ["Submit Changes", "Complete Order"]:
             # raises error and displays error page
             logger.warning(
-                "unsupported submit name in basket form user:%s", request.user.username
+                "user:%s unsupported submit value in basket form", request.user.username
             )
             raise Http404("<h1> suspicious operation </h1>")
 
