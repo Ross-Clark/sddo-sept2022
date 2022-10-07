@@ -57,4 +57,6 @@ COPY ./docker/bashrc.sh /home/sddo/.bashrc
 
 USER sddo
 
+RUN python manage.py collectstatic --noinput --clear
+
 CMD gunicorn core.wsgi:application

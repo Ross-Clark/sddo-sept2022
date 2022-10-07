@@ -5,11 +5,13 @@ import logging
 
 logger = logging.getLogger(__name__)
 
+
 class AuthRequiredMiddleware(object):
-    '''
+    """
     Prevents unautherised users from accessing all pages
-    except for the ones required to gain authentication 
-    '''
+    except for the ones required to gain authentication
+    """
+
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -24,7 +26,7 @@ class AuthRequiredMiddleware(object):
         if not request.user.is_authenticated and excludedUris:
             url = self.validate_url(request.path)
             if url:
-                logger.warning("anonymous user attempted to access site : %s",url)
+                logger.warning("anonymous user attempted to access site : %s", url)
             else:
                 logger.warning("anonymous user attempted to access site : invalid page")
 
@@ -35,10 +37,11 @@ class AuthRequiredMiddleware(object):
 
         return response
 
-    def validate_url(self,url):
+    def validate_url(self, url):
         # search urlpatterns for url
-        # return url if it matches else return None 
+        # return url if it matches else return None
         for e in urlpatterns:
-            if e.regex.match(url):
+
+            if e.pattern.regex.match(url):
                 return url
         return None

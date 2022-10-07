@@ -119,10 +119,10 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_ROOT = Path(__file__).resolve().parent.parent.parent / "static_raw"
+STATIC_ROOT = Path(__file__).resolve().parent.parent.parent / "static"
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    "static",
+    "static_raw",
 ]
 
 # Default primary key field type
@@ -164,5 +164,3 @@ MEDIA_ROOT = "media/"
 MEDIA_URL = "media/"
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
-
