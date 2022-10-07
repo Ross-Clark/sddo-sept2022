@@ -39,6 +39,7 @@ class AuthRequiredMiddleware(object):
         # search urlpatterns for url
         # return url if it matches else return None 
         for e in urlpatterns:
-            if e.regex.match(url):
+
+            if e.pattern.regex.match(url):
                 return url
         return None
