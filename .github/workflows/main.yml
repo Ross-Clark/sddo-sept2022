@@ -44,8 +44,10 @@ jobs:
           python3 -m black . --check --config=./poetry/pyproject.toml
 
           
-      - name: Test with pytest
+      - name: Test with django tests
         run: |
-          python3 -m unittest
+            docker-compose up -d
+            docker-compose exec web bash
+            dj test
 
       
