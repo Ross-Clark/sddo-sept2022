@@ -19,7 +19,7 @@ class LogoutView(View):
         # default logout function
         logout(request)
         # return to login form
-        return redirect("/")
+        return redirect("/user/login/")
 
 
 class SignUpView(View):
@@ -27,30 +27,38 @@ class SignUpView(View):
     template_name = "registration/signup.html"
 
     def get(self, request):
+        if not request.user.is_authenticated:
+            # initialise form
+            form = CustomUserCreationForm()
 
-        # initialise form
-        form = CustomUserCreationForm()
+            return render(request, self.template_name, {"form": form})#
 
-        return render(request, self.template_name, {"form": form})
+        else:
+
+            return redirect("/choose-your-own-device/")
 
     def post(self, request):
+        if not request.user.is_authenticated:
+            # post form
+            form = CustomUserCreationForm(request.POST)
+            if form.is_valid():
+                user = form.save()
+                user.refresh_from_db()  # load the profile instance created by the signal
+                user.first_name = form.cleaned_data.get("first_name")
+                user.last_name = form.cleaned_data.get("last_name")
+                user.email = form.cleaned_data.get("email")
+                user.save()
+                raw_password = form.cleaned_data.get("password1")
+                user = authenticate(username=user.username, password=raw_password)
+                login(request, user)
+            else:
+                return render(request, self.template_name, {"form": form})
 
-        # post form
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.first_name = form.cleaned_data.get("first_name")
-            user.last_name = form.cleaned_data.get("last_name")
-            user.email = form.cleaned_data.get("email")
-            user.save()
-            raw_password = form.cleaned_data.get("password1")
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
+            return redirect("/choose-your-own-device/")
+
         else:
-            return render(request, self.template_name, {"form": form})
 
-        return redirect("/choose-your-own-device/")
+            return redirect("/choose-your-own-device/")
 
 
 class ProfileView(View):
@@ -109,7 +117,7 @@ class EditUserView(View):
         else:
             return render(request, self.template_name, {"form": form})
 
-        return redirect("/user/profile")
+        return redirect("/user/profile/")
 
 
 class LogsView(View):
