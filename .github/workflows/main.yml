@@ -40,7 +40,7 @@ jobs:
       - name: Test with django tests
         run: |
             docker-compose up -d
-            docker-compose exec -it web bash
+            docker-compose exec -it /bin/bash
             dj test
 
       
