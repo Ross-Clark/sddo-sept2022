@@ -145,27 +145,24 @@ CSRF_TRUSTED_ORIGINS = ["https://sddo-proj-sept2022.herokuapp.com"]
 LOGGING = {
     "version": 1,  # dictConfig  version
     "disable_existing_loggers": False,  # retain default loggers
-    'formatters': {
-        'timestamp': {
-            'format': '{asctime} {levelname} {message}',
-            'style': '{',
+    "formatters": {
+        "timestamp": {
+            "format": "{asctime} {levelname} {message}",
+            "style": "{",
         },
     },
     # set handlers - where logs are sent and their format
     "handlers": {
-        'console': {
-            'class': 'logging.StreamHandler',
-            'formatter': 'timestamp'
-        },
+        "console": {"class": "logging.StreamHandler", "formatter": "timestamp"},
         "file": {
             "class": "logging.FileHandler",
             "filename": "general.log",
-            'formatter': 'timestamp'
+            "formatter": "timestamp",
         },
     },
     "loggers": {
-        "user.views": {"level": "INFO", "handlers": ["file","console"]},
-        "cyod.views": {"level": "INFO", "handlers": ["file","console"]},
+        "user.views": {"level": "INFO", "handlers": ["file", "console"]},
+        "cyod.views": {"level": "INFO", "handlers": ["file", "console"]},
     },
 }
 

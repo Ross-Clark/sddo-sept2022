@@ -1,5 +1,6 @@
 from django.test import testcases
 
+
 class MiddlewareTest(testcases.TestCase):
     def test_login(self):
         response = self.client.get("/user/login/")

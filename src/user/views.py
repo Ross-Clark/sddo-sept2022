@@ -31,7 +31,7 @@ class SignUpView(View):
             # initialise form
             form = CustomUserCreationForm()
 
-            return render(request, self.template_name, {"form": form})#
+            return render(request, self.template_name, {"form": form})  #
 
         else:
 

@@ -52,7 +52,7 @@ class ProductView(View):
             product = Product.objects.get(name=product_name)
         except Product.DoesNotExist:
             username = request.user.username
-            logger.warning("user:%s product page does not exist",username)
+            logger.warning("user:%s product page does not exist", username)
             raise Http404("product does not exist")
 
         form = forms.OrderItemProductViewForm()
@@ -89,7 +89,7 @@ class ProductView(View):
             OrderItem.objects.create(
                 order=basket, product=product, quantity=quantity, order_type=order_type
             )
-            logger.info("user: %s created a new basket order",user.username)
+            logger.info("user: %s created a new basket order", user.username)
 
         else:
             basket = basket.first()
@@ -97,7 +97,11 @@ class ProductView(View):
                 order=basket, product=product, quantity=quantity, order_type=order_type
             )
 
-        logger.info("user: %s created a new order item for %s in their open basket",user.username,product_name)
+        logger.info(
+            "user: %s created a new order item for %s in their open basket",
+            user.username,
+            product_name,
+        )
 
         return redirect("/choose-your-own-device/basket")
 
