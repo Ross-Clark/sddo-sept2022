@@ -8,19 +8,7 @@ RUN useradd sddo -m && mkdir /app && chown sddo /app && mkdir /app/media && chow
 WORKDIR /app
 
 # default environment variables. Used at build time and runtime.
-# environment variables on Heroku or Dokku will override the ones set here.
-#
-#  * PATH - Make sure that Poetry is on the PATH
-#
-#  * PYTHONUNBUFFERED - This is useful so Python does not hold any messages
-#    from being output.
-#
-#  * PYTHONPATH - enables use of django-admin command.
-#
-#  * DJANGO_SETTINGS_MODULE - default settings used in the container.
-#
-#  * PORT - default port used.
-#
+# environment variables on Heroku will override the ones set here.
 ENV PATH=$PATH:${POETRY_HOME}/bin \
     PYTHONUNBUFFERED=1 \
     PYTHONPATH=/app \
@@ -52,7 +40,7 @@ COPY --chown=sddo ./src ./
 COPY --chown=sddo ./media ./media
 COPY --chown=sddo ./manage.py  ./docker-entrypoint.sh ./initializer-entrypoint.sh  gunicorn-conf.py ./
 
-# Load shortcuts
+# Load docker alias'
 COPY ./docker/bashrc.sh /home/sddo/.bashrc
 
 USER sddo

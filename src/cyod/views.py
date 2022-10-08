@@ -52,7 +52,7 @@ class ProductView(View):
             product = Product.objects.get(name=product_name)
         except Product.DoesNotExist:
             username = request.user.username
-            logger.warning("user:%s product page does not exist - product view",username)
+            logger.warning("user:%s product page does not exist",username)
             raise Http404("product does not exist")
 
         form = forms.OrderItemProductViewForm()
