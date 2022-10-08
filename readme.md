@@ -23,6 +23,8 @@ To run this repository you will need to:
 
     To run the gunicorn webserver run `djgun` (alias of `gunicorn core.wsgi:application --reload`) 
 
+    To run the tests run `dj test`
+
 ## Docker with Fabric
 
     install fabric - https://www.fabfile.org/installing.html
@@ -40,6 +42,8 @@ To run this repository you will need to:
     To start the django webserver run `djrun` (alias of `python manage.py runserver 0.0.0.0:8000`) 
 
     To run the gunicorn webserver run `djgun` (alias of `gunicorn core.wsgi:application --reload`) 
+
+    To run the tests run `dj test`
 
 ## view on heroku
     https://sddo-proj-sept2022.herokuapp.com/

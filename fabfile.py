@@ -69,3 +69,10 @@ def sh_root(c):
     Run bash as root in the local web container
     """
     subprocess.run(["docker-compose", "exec", "--user=root", "web", "bash"])
+
+@task
+def tests(c):
+    '''
+    run tests in the test container
+    '''
+    run("docker-compose -f ./docker-compose-test.yml up")

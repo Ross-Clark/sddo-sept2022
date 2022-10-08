@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  test:
+    build:
+      context: .
+      dockerfile: TestDockerfile
+      args:
+        BUILD_ENV: dev
+    init: true
+    environment:
+      ALLOWED_HOSTS: 127.0.0.1,0.0.0.0,localhost
+      DB_HOST: db
+      SECRET_KEY: local_dev_secret_key
+      STATIC_DIR: /app/static/
+      STATIC_URL: /static/
+      DEBUG: ${DEBUG}
+      GUNICORN_CMD_ARGS: ${GUNICORN_CMD_ARGS}
+
+    ports:
+      - 8000:8000 # runserver
+      - 4000:4000 # debugger
+    volumes:
+      - ./src/manage.py:/app/manage.py:delegated,ro
+      - ./poetry:/app/poetry:delegated,rw
+      - ./src/cyod:/app/cyod:delegated,rw
+      - ./src/user:/app/user:delegated,rw
+      - ./src/core:/app/core:delegated,rw
+      - ./media:/app/media:delegated,rw
+    command: ["bash", "/app/runTests.sh"] # run this script to run tests
