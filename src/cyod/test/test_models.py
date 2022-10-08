@@ -1,7 +1,9 @@
 from datetime import datetime
+
 from django.test import TestCase
 
 from cyod import models
+from user import models as user_models
 
 class ProductModelTest(TestCase):
     @classmethod
@@ -66,7 +68,15 @@ class ProductModelTest(TestCase):
 class OrderModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
+        user = user_models.User.objects.create_user(
+            username='testuser',
+            password='testpass123',
+            first_name='test',
+            last_name='user',
+        )
+
         models.Order.objects.create(
+        user = user,
         address1='address1',
         address2='address2',
         address3='address3',
@@ -134,7 +144,7 @@ class OrderModelTest(TestCase):
     def test_phone_max_length(self):
         order = models.Order.objects.get(id=1)
         max_length = order._meta.get_field('phone').max_length
-        self.assertEquals(max_length, 20)
+        self.assertEquals(max_length, 13)
     
     def test_justification_label(self):
         order = models.Order.objects.get(id=1)
@@ -154,7 +164,7 @@ class OrderModelTest(TestCase):
     def test_status_max_length(self):
         order = models.Order.objects.get(id=1)
         max_length = order._meta.get_field('status').max_length
-        self.assertEquals(max_length, 4)
+        self.assertEquals(max_length, 5)
 
     def test_comments_label(self):
         order = models.Order.objects.get(id=1)
@@ -185,7 +195,15 @@ class  OrderItem(TestCase):
         description='test',
         roles_allowed='all')
 
+        user = user_models.User.objects.create_user(
+            username='testuser',
+            password='testpass123',
+            first_name='test',
+            last_name='user',
+        )
+
         order = models.Order.objects.create(
+        user = user,
         address1='address1',
         address2='address2',
         address3='address3',
@@ -225,5 +243,5 @@ class  OrderItem(TestCase):
     def test_order_type_max_length(self):
         orderitem = models.OrderItem.objects.get(id=1)
         max_length = orderitem._meta.get_field('order_type').max_length
-        self.assertEquals(max_length, 3)
+        self.assertEquals(max_length, 4)
     

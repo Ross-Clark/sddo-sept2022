@@ -20,7 +20,7 @@ services:
       - 8000:8000 # runserver
       - 4000:4000 # debugger
     volumes:
-      - ./manage.py:/app/manage.py:delegated,ro
+      - ./src/manage.py:/app/manage.py:delegated,ro
       - ./poetry:/app/poetry:delegated,rw
       - ./src/cyod:/app/cyod:delegated,rw
       - ./src/user:/app/user:delegated,rw

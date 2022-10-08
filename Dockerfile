@@ -38,7 +38,7 @@ RUN cd ./poetry && if [ "$BUILD_ENV" = "dev" ]; then poetry install --extras gun
 # Copy application code.
 COPY --chown=sddo ./src ./
 COPY --chown=sddo ./media ./media
-COPY --chown=sddo ./manage.py  ./docker-entrypoint.sh ./initializer-entrypoint.sh  gunicorn-conf.py ./
+COPY --chown=sddo ./docker-entrypoint.sh ./initializer-entrypoint.sh  gunicorn-conf.py ./
 
 # Load docker alias'
 COPY ./docker/bashrc.sh /home/sddo/.bashrc
